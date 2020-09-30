@@ -1,0 +1,22 @@
+{
+  "name": "supporteng",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "http-server -p 80"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Venatus/assignment-speng.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Venatus/assignment-speng/issues"
+  },
+  "homepage": "https://github.com/Venatus/assignment-speng#readme",
+  "devDependencies": {
+    "http-server": "^0.12.3"
+  }
+}
