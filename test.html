@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Venatus Media Technical Test</title>
+</head>
+<body>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script async src="//acdn.adnxs.com/prebid/not-for-prod/prebid.js"></script>
+</head>
+
+<body>
+
+<script>
+
+    var pbjs = pbjs || {};
+
+    pbjs.que = pbjs.que || [];
+
+    const sizes = [
+        [300, 250],
+        [300, 600],
+        [160, 600]
+    ];
+
+    const PREBID_TIMEOUT = 1000;
+
+    const adId = "venatusMPU";
+
+    const adUnits = [{
+        code: adId,
+        mediaTypes: {
+            banner: {
+                sizes: sizes
+            }
+        },
+        bids: [
+            {
+                bidder: "appnexus",
+                params: {
+                    placementId: "12842092"
+                }
+            },
+            {
+                bidder: "sovrn",
+                params: {
+                    tagid: "531211"
+                }
+            },
+            {
+                bidder: "ix",
+                params: {
+                    id: 5,
+                    siteId: "171882"
+                }
+            },
+            {
+                bidder: "aol",
+                params: {
+                    dcn: "8a96910a0171711819381b68a87c0057",
+                    pos: "300x250_static"
+                }
+            },
+            {
+                bidder: "improvedigital",
+                params: {
+                    placementId: 1093595
+                }
+            },
+            {
+                bidder: "improvedigital",
+                params: {
+                    placementId: 1093596
+                }
+            },
+            {
+                bidder: "improvedigital",
+                params: {
+                    placementId: 1093597
+                }
+            },
+            {
+                bidder: "rubicon",
+                params: {
+                    siteId: "13762",
+                    zoneId: "767258",
+                    sizeId: 15
+                }
+            }
+        ]
+    }];
+
+
+
+    function fetchBid(callback) {
+
+        pbjs.que.push(function() {
+            pbjs.addAdUnits(adUnits);
+            pbjs.requestBids({
+                timeout: PREBID_TIMEOUT,
+                bidsBackHandler: callback
+            });
+
+        });
+    }
+
+
+    fetchBid(function (bidResponse) {
+
+        const iframe = document.getElementById(adId);
+        const iframeDoc = iframe.contentWindow.document;
+        const adServerTargeting = pbjs.getAdserverTargetingForAdUnitCode(adId);
+
+        if (adServerTargeting && adServerTargeting['hb_adid']) {
+            pbjs.renderAd(iframeDoc, adServerTargeting['hb_adid']);
+
+        } else {
+            iframe.width = sizes[0][0];
+            iframe.height = sizes[0][1];
+            iframeDoc.write('<head></head><body><img src="https://via.placeholder.com/300x250?text=I am a Passback" alt="PSA"></body>');
+            iframeDoc.close();
+        }
+    });
+
+
+    function refreshAd(timeout) {
+
+        setTimeout(function () {
+
+          function refresh(callback) {
+
+              pbjs.que.push(function() {
+                  pbjs.requestBids({
+                      timeout: PREBID_TIMEOUT,
+                      bidsBackHandler: callback
+                  });
+
+              });
+          }
+
+          refresh(function (bidResponse) {
+
+              const iframe = document.getElementById(adId);
+              const iframeDoc = iframe.contentWindow.document;
+              const adServerTargeting = pbjs.getAdserverTargetingForAdUnitCode(adId);
+
+              if (adServerTargeting && adServerTargeting['hb_adid']) {
+                  pbjs.renderAd(iframeDoc, adServerTargeting['hb_adid']);
+
+              } else {
+                  iframe.width = sizes[0][0];
+                  iframe.height = sizes[0][1];
+                  iframeDoc.write('<head></head><body><img src="https://via.placeholder.com/300x250?text=I am a Passback" alt="PSA"></body>');
+                  iframeDoc.close();
+              }
+          });
+
+        }, timeout);
+
+    }
+
+</script>
+
+
+<div class="container">
+    <h3>Test</h3>
+
+
+    <div class="row">
+
+        <div class="col-sm">
+
+            <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eget imperdiet orci. Suspendisse semper nunc non maximus blandit. Fusce commodo dictum tellus id tristique. Nam pellentesque aliquet leo non eleifend. Sed fringilla ac ante sit amet tempor. Sed sit amet metus libero. Nunc non egestas nulla, id pharetra nisi. Nulla eget ante finibus, rhoncus quam eu, varius mauris. Etiam posuere ante a nisi ornare iaculis nec eget erat. Donec venenatis sem id nulla mollis, a placerat arcu laoreet. Fusce ut iaculis velit, ac euismod nulla. Morbi et lorem id risus lacinia rutrum.
+            </p>
+
+            Nullam sit amet augue at massa interdum pellentesque et in libero. Nunc facilisis vulputate elit. Proin vulputate nisi ut nulla posuere, et egestas est consectetur. Cras ut faucibus lorem. Integer semper tellus at vehicula ornare. Nulla convallis nunc in sem pharetra, quis fringilla ante tincidunt. Sed vel elit iaculis, tempus urna sit amet, elementum mauris. In in arcu sed augue dignissim pretium. Aenean volutpat vulputate nunc, et vestibulum arcu ornare ut. Donec sed metus ornare, dignissim sem eu, posuere nisi. Fusce at posuere nunc, nec viverra nisl.
+            <p>
+            Morbi condimentum egestas eros, pulvinar vehicula elit volutpat vel. Pellentesque porta placerat mi ut tincidunt. Proin egestas nibh eu metus ultricies iaculis. Nunc porttitor augue sapien, at blandit ante ullamcorper a. Curabitur molestie odio non venenatis suscipit. Vivamus at metus fringilla, commodo metus ut, sagittis felis. Pellentesque vehicula, ipsum vitae pellentesque consequat, nibh ante maximus erat, sit amet porta magna dui ut tellus. Integer non dapibus urna. In hac habitasse platea dictumst. Vivamus tristique ultrices mauris, eget porttitor turpis ornare at. Suspendisse vitae massa eget orci finibus tincidunt. Phasellus ut felis eget velit lacinia feugiat.
+            </p>
+            <div class="advert">
+                <script>
+
+                    document.write("<iframe id='venatusMPU' \n" +
+                        "            FRAMEBORDER=\"0\"\n" +
+                        "            SCROLLING=\"no\"\n" +
+                        "            MARGINHEIGHT=\"0\"\n" +
+                        "            MARGINWIDTH=\"0\"\n" +
+                        "            TOPMARGIN=\"0\" \n" +
+                        "            LEFTMARGIN=\"0\" \n" +
+                        "            ALLOWTRANSPARENCY=\"true\"\n" +
+                        "            WIDTH=\"0\"\n" +
+                        "            HEIGHT=\"0\">\n" +
+                        "        </iframe>");
+
+                      refreshAd(5000);
+
+
+                </script>
+            </div>
+            Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam quis tellus et est dapibus malesuada nec ac ex. Sed pellentesque sem non semper facilisis. Vestibulum maximus magna vitae lectus vehicula rhoncus. Ut eget aliquet nisl. Nulla aliquam lorem vel volutpat ullamcorper. Mauris sagittis tempor suscipit. Pellentesque tincidunt tempus est, sed aliquam lorem. Morbi aliquam, mi a mattis scelerisque, mi tortor hendrerit enim, sed vestibulum enim dolor ut tellus. Fusce ultricies vulputate rhoncus. Nunc vel molestie mauris. Sed tellus ante, sodales id ligula vel, accumsan maximus velit. Aenean facilisis, lectus a feugiat maximus, odio tellus facilisis felis, at congue nunc nibh non urna. Cras at ex augue. Nullam at rhoncus orci.
+            <p>
+            Suspendisse consequat bibendum nisl non tincidunt. Mauris vel condimentum sapien. Aenean nec ante eros. Aliquam blandit in sapien quis imperdiet. Phasellus mi mi, venenatis vel rhoncus sit amet, egestas id mauris. Mauris nec sapien sollicitudin, lobortis dui at, dapibus velit. Morbi scelerisque tincidunt lorem, a imperdiet magna pulvinar a. Ut maximus volutpat neque et vehicula. Praesent viverra dignissim placerat. Aliquam a rhoncus augue. Donec blandit orci at condimentum tristique. Vestibulum semper molestie erat, tempus elementum turpis convallis sit amet. Morbi vitae imperdiet augue. Nam massa libero, lacinia sed arcu ut, fermentum dapibus risus.
+            </p>
+        </div>
+
+
+
+
+    </div>
+
+
+</div>
+
+</body>
+
+
+
+</html>
+
+</body>
+</html>
